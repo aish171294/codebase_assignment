@@ -1,4 +1,5 @@
 import 'package:code_base_assignment/core/utils/constants/app_constants.dart';
+import 'package:code_base_assignment/core/widgets/common_button.dart';
 import 'package:code_base_assignment/core/widgets/common_text_field.dart';
 import 'package:code_base_assignment/features/todo/domain/entity/todo_entity.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,6 @@ class _CreateTodoScreenState extends State<CreateTodoScreen> {
     Navigator.pop(context, true); // optionally notify success
   }
 
-
   Future<void> _pickDueDate() async {
     final pickedDate = await showDatePicker(
       context: context,
@@ -96,7 +96,9 @@ class _CreateTodoScreenState extends State<CreateTodoScreen> {
       appBar: AppBar(
         title: Center(
           child: Text(
-            widget.todo == null ? AppConstants.createTodo : AppConstants.editTodo,
+            widget.todo == null
+                ? AppConstants.createTodo
+                : AppConstants.editTodo,
           ),
         ),
       ),
@@ -121,43 +123,55 @@ class _CreateTodoScreenState extends State<CreateTodoScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CommonTextField(label: AppConstants.title, controller: titleController),
-                   SizedBox(height: 18.h),
-                  CommonTextField(label: AppConstants.description, controller: descriptionController, maxLines: 3,),
-                   SizedBox(height: 18.h),
-                  Row(
-                    children: [
-                      Text(
-                        dueDate == null
-                            ? AppConstants.selectDueDate
-                            : DateFormat('yyyy-MM-dd').format(dueDate!),
-                      ),
-                      const SizedBox(width: 16),
-                      ElevatedButton(
-                        onPressed: _pickDueDate,
-                        child: const Text(AppConstants.pickDate),
-                      ),
-                    ],
+                  CommonTextField(
+                    label: AppConstants.title,
+                    controller: titleController,
                   ),
-                  const Spacer(),
+                  SizedBox(height: 18.h),
+                  CommonTextField(
+                    label: AppConstants.description,
+                    controller: descriptionController,
+                    maxLines: 3,
+                  ),
+                  SizedBox(height: 18.h),
                   Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 16, bottom: 18),
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          dueDate == null
+                              ? AppConstants.selectDueDate
+                              : DateFormat('yyyy-MM-dd').format(dueDate!),
+                        ),
+                        const SizedBox(width: 16),
+                        ElevatedButton(
+                          onPressed: _pickDueDate,
+                          child: const Text(AppConstants.pickDate),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 100.h),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      bottom: 18,
+                    ),
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.05,
                       width: double.infinity,
-                      child:
-                      ElevatedButton(
-                        onPressed: () => _submitTodo(context),
-                        child: state is TodoLoading
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                            : Text(
-                                widget.todo == null
-                                    ? AppConstants.saveTodo
-                                    : AppConstants.updateTodo,
-                              ),
-                      ),
+                      child: state is TodoLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : CommonButton(
+                              text: widget.todo == null
+                                  ? AppConstants.saveTodo
+                                  : AppConstants.updateTodo,
+                              onPressed: () {
+                                _submitTodo(context);
+                              },
+                            ),
                     ),
                   ),
                 ],
