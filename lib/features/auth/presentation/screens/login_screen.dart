@@ -1,29 +1,30 @@
+import 'package:code_base_assignment/core/routes/route_names.dart';
 import 'package:code_base_assignment/core/utils/constants/app_constants.dart';
 import 'package:code_base_assignment/core/utils/themes/color_theme.dart';
 import 'package:code_base_assignment/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:code_base_assignment/features/auth/presentation/bloc/auth_event.dart';
 import 'package:code_base_assignment/features/auth/presentation/bloc/auth_state.dart';
-import 'package:code_base_assignment/features/auth/presentation/screens/register_screen.dart';
 import 'package:code_base_assignment/features/todo/domain/entity/todo_entity.dart';
-import 'package:code_base_assignment/features/todo/presentation/screens/todo_screen.dart';
 import 'package:code_base_assignment/features/todo/presentation/widget/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   final TodoEntity? todo;
   LoginScreen({super.key, this.todo});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
-  void userLoggedIn() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isLoggedIn', true);
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +38,14 @@ class LoginScreen extends StatelessWidget {
                 SnackBar(content: Text(state.message)),
               );
             }
-      
-            if (state is AuthSuccess) {
-              userLoggedIn();
-              ScaffoldMessenger.of(context).showSnackBar(
 
-                const SnackBar(content: Text(AppConstants.loginSuccessful)),
+            if (state is AuthSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content:
+                // Text(S.of(context).loginSuccessful))
+                Text(AppConstants.loginSuccessful)),
               );
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TodoScreen(),));
+              Navigator.pushNamed(context, RouteNames.todo);
             }
           },
           builder: (context, state) {
@@ -61,7 +62,7 @@ class LoginScreen extends StatelessWidget {
                 ));
               },
               onToggle: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen(),));
+                Navigator.pushNamed(context, RouteNames.register);
               },
             );
           },

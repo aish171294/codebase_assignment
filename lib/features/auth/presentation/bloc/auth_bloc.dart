@@ -6,6 +6,7 @@ import 'package:code_base_assignment/features/auth/presentation/bloc/auth_event.
 import 'package:code_base_assignment/features/auth/presentation/bloc/auth_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -19,6 +20,43 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 }) : super(AuthInitial()) {
     on<LoginSubmitted>(_onLoginSubmitted);
     on<RegisterSubmitted>(_onRegisterSubmitted);
+    on<CheckAuthStatus>(_onCheckAuthStatus);
+    on<LogoutRequested>(_onLogoutRequested);
+  }
+
+
+  Future<void> _onCheckAuthStatus(
+      CheckAuthStatus event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+
+    await Future.delayed(const Duration(seconds: 1)); // simulate loading
+
+    final isLoggedIn = await isUserLoggedIn();
+
+    if (isLoggedIn) {
+      emit(Authenticated());
+    } else {
+      emit(Unauthenticated());
+    }
+  }
+
+
+  Future<bool> isUserLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.setBool('isLoggedIn', true);
+  }
+
+  Future<void> setUserLoggedIn(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', value);
+  }
+
+  Future<void> _onLogoutRequested(
+      LogoutRequested event, Emitter<AuthState> emit) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false);
+
+    emit(Unauthenticated()); // so UI knows user is logged out
   }
 
 
@@ -67,8 +105,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthFailure(AppConstants.somethingWentWrongPleaseTryAgain));
     }
   }
-
-
 
 
   Future<void> _onRegisterSubmitted(

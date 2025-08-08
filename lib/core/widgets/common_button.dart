@@ -1,4 +1,3 @@
-import 'package:code_base_assignment/core/utils/themes/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -21,11 +20,10 @@ class CommonButton extends StatelessWidget {
       onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(double.infinity, 58),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       child: isLoading
           ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
-          : Text(text, style: TextStyleHelper.headline2(16.sp)),
+          : Text(text, style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
     );
   }
 }

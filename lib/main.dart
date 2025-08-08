@@ -1,22 +1,20 @@
-
 import 'package:code_base_assignment/core/connectivity/connectivity_bloc.dart';
 import 'package:code_base_assignment/core/connectivity/network_info.dart';
+import 'package:code_base_assignment/core/routes/app_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'core/di/di_injection.dart';
+import 'core/routes/route_names.dart';
 import 'features/auth/data/model/user_model.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/auth/presentation/bloc/auth_state.dart';
 import 'features/auth/presentation/screens/login_screen.dart';
 import 'features/todo/data/model/todo_model.dart';
 
 import 'features/todo/presentation/bloc/todo/todo_bloc.dart';
-
-
 import 'features/todo/presentation/screens/todo_screen.dart';
 import 'features/todo/presentation/widget/no_internet_widget.dart';
 import 'firebase_options.dart';
@@ -40,11 +38,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<bool> isUserLoggedIn() async {
-      final prefs = await SharedPreferences.getInstance();
-      return prefs.getBool('isLoggedIn') ?? false;
-    }
-
+    // Future<bool> isUserLoggedIn() async {
+    //   final prefs = await SharedPreferences.getInstance();
+    //   return prefs.getBool('isLoggedIn') ?? false;
+    // }
     return ScreenUtilInit(
       designSize: Size(375, 812),
       minTextAdapt: true,
@@ -72,16 +69,20 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
             theme: ThemeData(primarySwatch: Colors.blue),
-            home: FutureBuilder<bool>(
-              future: isUserLoggedIn(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.data == true) {
+            initialRoute: RouteNames.login,
+            onGenerateRoute: AppRoutes.generateRoute,
+            home: BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is AuthLoading) {
+                  return const Scaffold(
+                    body: Center(child: CircularProgressIndicator()),
+                  );
+                } else if (state is Authenticated) {
                   return const TodoScreen();
-                } else {
+                } else if (state is Unauthenticated) {
                   return LoginScreen();
                 }
+                return const SizedBox();
               },
             ),
           ),
@@ -90,5 +91,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 
 

@@ -15,3 +15,7 @@ class RegisterSubmitted extends AuthEvent {
 
   RegisterSubmitted({required this.name, required this.confirmPassword,  required this.email,  required this.password});
 }
+
+class CheckAuthStatus extends AuthEvent {}
+
+class LogoutRequested extends AuthEvent {}

@@ -1,21 +1,29 @@
+import 'package:code_base_assignment/core/routes/route_names.dart';
 import 'package:code_base_assignment/core/utils/constants/app_constants.dart';
 import 'package:code_base_assignment/core/utils/themes/color_theme.dart';
 import 'package:code_base_assignment/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:code_base_assignment/features/auth/presentation/bloc/auth_event.dart';
 import 'package:code_base_assignment/features/auth/presentation/bloc/auth_state.dart';
-import 'package:code_base_assignment/features/auth/presentation/screens/login_screen.dart';
 import 'package:code_base_assignment/features/todo/presentation/widget/register_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   RegisterScreen({super.key});
 
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController nameController = TextEditingController();
+
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
   final TextEditingController confirmPasswordController = TextEditingController();
 
   @override
@@ -30,15 +38,12 @@ class RegisterScreen extends StatelessWidget {
                 SnackBar(content: Text(state.message)),
               );
             }
-      
+
             if (state is AuthSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
                  SnackBar(content: Text(AppConstants.registrationSuccessful)),
               );
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => LoginScreen()),
-              );
+              Navigator.pushNamed(context, RouteNames.login);
             }
           },
           builder: (context, state) {
@@ -59,10 +64,7 @@ class RegisterScreen extends StatelessWidget {
                 ));
               },
               onToggle: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => LoginScreen()),
-                );
+                Navigator.pushNamed(context, RouteNames.login);
               },
             );
           },

@@ -1,13 +1,12 @@
+import 'package:code_base_assignment/core/routes/route_names.dart';
 import 'package:code_base_assignment/core/utils/constants/app_constants.dart';
-import 'package:code_base_assignment/features/todo/presentation/screens/create_todo_screen.dart';
+import 'package:code_base_assignment/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:code_base_assignment/features/auth/presentation/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../core/utils/themes/color_theme.dart';
-import '../../../auth/presentation/screens/login_screen.dart';
 import '../bloc/todo/todo_bloc.dart';
 import '../bloc/todo/todo_event.dart';
 import '../bloc/todo/todo_state.dart';
@@ -27,11 +26,13 @@ class _TodoScreenState extends State<TodoScreen> {
     _refreshController.refreshCompleted();
   }
 
-  void userLoggedOut() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isLoggedIn', false);
-    context.read<TodoBloc>().add(DeleteAllTodo());
-  }
+  // void userLoggedOut() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   prefs.setBool('isLoggedIn', false);
+  //   context.read<TodoBloc>().add(DeleteAllTodo());
+  // }
+
+
   @override
   void initState() {
     context.read<TodoBloc>().add(LoadTodos());
@@ -57,11 +58,10 @@ class _TodoScreenState extends State<TodoScreen> {
             padding: const EdgeInsets.only(right: 16),
             child: GestureDetector(
               onTap: () {
-                userLoggedOut();
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => LoginScreen()),
-                      (route) => false,
-                );
+                context.read<TodoBloc>().add(DeleteAllTodo());
+                context.read<AuthBloc>().add(LogoutRequested());
+                // userLoggedOut();
+                Navigator.pushReplacementNamed(context, RouteNames.login);
               },
               child: const Icon(Icons.logout),
             ),
@@ -137,13 +137,11 @@ class _TodoScreenState extends State<TodoScreen> {
                         ],
                       ),
                       onTap: () async {
-                        final updated = await Navigator.push(
+                        final updated = Navigator.pushNamed(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => CreateTodoScreen(todo: todo),
-                          ),
+                          RouteNames.create_todo,
+                          arguments: todo, // Passing todo object here
                         );
-
                         if (updated == true) {
                           context.read<TodoBloc>().add(LoadTodos());
                         }
@@ -162,10 +160,7 @@ class _TodoScreenState extends State<TodoScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreateTodoScreen()),
-          );
+          Navigator.pushNamed(context, RouteNames.create_todo);
         },
         child: const Icon(Icons.add),
       ),
