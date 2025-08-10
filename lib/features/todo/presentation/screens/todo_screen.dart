@@ -1,10 +1,11 @@
 import 'package:code_base_assignment/core/routes/route_names.dart';
 import 'package:code_base_assignment/core/utils/constants/app_constants.dart';
+import 'package:code_base_assignment/core/widgets/language_toggle_button.dart';
 import 'package:code_base_assignment/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:code_base_assignment/features/auth/presentation/bloc/auth_event.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../../core/utils/themes/color_theme.dart';
 import '../bloc/todo/todo_bloc.dart';
@@ -26,13 +27,6 @@ class _TodoScreenState extends State<TodoScreen> {
     _refreshController.refreshCompleted();
   }
 
-  // void userLoggedOut() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   prefs.setBool('isLoggedIn', false);
-  //   context.read<TodoBloc>().add(DeleteAllTodo());
-  // }
-
-
   @override
   void initState() {
     context.read<TodoBloc>().add(LoadTodos());
@@ -51,16 +45,17 @@ class _TodoScreenState extends State<TodoScreen> {
       backgroundColor: AppColors.tropicalBlue,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text(AppConstants.yourTodos),
+        title: Text(AppConstants.yourTodos.tr()),
         centerTitle: true,
         actions: [
+          LanguageToggleButton(),
+          SizedBox(width: 10,),
           Padding(
             padding: const EdgeInsets.only(right: 16),
             child: GestureDetector(
               onTap: () {
                 context.read<TodoBloc>().add(DeleteAllTodo());
                 context.read<AuthBloc>().add(LogoutRequested());
-                // userLoggedOut();
                 Navigator.pushReplacementNamed(context, RouteNames.login);
               },
               child: const Icon(Icons.logout),
@@ -80,7 +75,7 @@ class _TodoScreenState extends State<TodoScreen> {
               onRefresh: _onRefresh,
               header: const WaterDropHeader(),
               child: state.todos.isEmpty
-                  ? const Center(child: Text(AppConstants.noTodosFound))
+                  ? Center(child: Text(AppConstants.noTodosFound.tr()))
                   : ListView.builder(
                 padding: const EdgeInsets.all(12),
                 itemCount: state.todos.length,

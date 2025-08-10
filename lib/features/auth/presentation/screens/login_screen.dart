@@ -6,6 +6,7 @@ import 'package:code_base_assignment/features/auth/presentation/bloc/auth_event.
 import 'package:code_base_assignment/features/auth/presentation/bloc/auth_state.dart';
 import 'package:code_base_assignment/features/todo/domain/entity/todo_entity.dart';
 import 'package:code_base_assignment/features/todo/presentation/widget/login_form.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,7 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   final TodoEntity? todo;
-  LoginScreen({super.key, this.todo});
+  const LoginScreen({super.key, this.todo});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -43,14 +44,14 @@ class _LoginScreenState extends State<LoginScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content:
                 // Text(S.of(context).loginSuccessful))
-                Text(AppConstants.loginSuccessful)),
+                Text(AppConstants.loginSuccessful.tr())),
               );
               Navigator.pushNamed(context, RouteNames.todo);
             }
           },
           builder: (context, state) {
             return LoginForm(
-              actionButtonText: AppConstants.login,
+              actionButtonText: AppConstants.login.tr(),
               emailController: emailController,
               passwordController: passwordController,
               isLogin: true,

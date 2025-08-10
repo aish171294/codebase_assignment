@@ -20,7 +20,7 @@ class AppRoutes {
 
 
       case RouteNames.create_todo:
-        final args = settings.arguments as TodoEntity;
+        final args = settings.arguments as TodoEntity?;
         return MaterialPageRoute(
           builder: (_) => CreateTodoScreen(todo: args,)
         );

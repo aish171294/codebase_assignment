@@ -2,6 +2,7 @@ import 'package:code_base_assignment/core/utils/constants/app_constants.dart';
 import 'package:code_base_assignment/core/widgets/common_button.dart';
 import 'package:code_base_assignment/core/widgets/common_text_field.dart';
 import 'package:code_base_assignment/features/todo/domain/entity/todo_entity.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -49,7 +50,7 @@ class _CreateTodoScreenState extends State<CreateTodoScreen> {
 
     if (title.isEmpty || description.isEmpty || dueDate == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppConstants.allFieldsAreRequired)),
+        SnackBar(content: Text(AppConstants.allFieldsAreRequired.tr())),
       );
       return;
     }
@@ -97,8 +98,8 @@ class _CreateTodoScreenState extends State<CreateTodoScreen> {
         title: Center(
           child: Text(
             widget.todo == null
-                ? AppConstants.createTodo
-                : AppConstants.editTodo,
+                ? AppConstants.createTodo.tr()
+                : AppConstants.editTodo.tr(),
           ),
         ),
       ),
@@ -111,7 +112,7 @@ class _CreateTodoScreenState extends State<CreateTodoScreen> {
           } else if (state is TodoSuccess) {
             Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(AppConstants.todoAddedSuccessfully)),
+              SnackBar(content: Text(AppConstants.todoAddedSuccessfully.tr())),
             );
           }
         },
@@ -124,12 +125,12 @@ class _CreateTodoScreenState extends State<CreateTodoScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CommonTextField(
-                    label: AppConstants.title,
+                    label: AppConstants.title.tr(),
                     controller: titleController,
                   ),
                   SizedBox(height: 18.h),
                   CommonTextField(
-                    label: AppConstants.description,
+                    label: AppConstants.description.tr(),
                     controller: descriptionController,
                     maxLines: 3,
                   ),
@@ -141,13 +142,13 @@ class _CreateTodoScreenState extends State<CreateTodoScreen> {
                       children: [
                         Text(
                           dueDate == null
-                              ? AppConstants.selectDueDate
+                              ? AppConstants.selectDueDate.tr()
                               : DateFormat('yyyy-MM-dd').format(dueDate!),
                         ),
                         const SizedBox(width: 16),
                         ElevatedButton(
                           onPressed: _pickDueDate,
-                          child: const Text(AppConstants.pickDate),
+                          child: Text(AppConstants.pickDate.tr()),
                         ),
                       ],
                     ),
@@ -166,8 +167,8 @@ class _CreateTodoScreenState extends State<CreateTodoScreen> {
                           ? const CircularProgressIndicator(color: Colors.white)
                           : CommonButton(
                               text: widget.todo == null
-                                  ? AppConstants.saveTodo
-                                  : AppConstants.updateTodo,
+                                  ? AppConstants.saveTodo.tr()
+                                  : AppConstants.updateTodo.tr(),
                               onPressed: () {
                                 _submitTodo(context);
                               },

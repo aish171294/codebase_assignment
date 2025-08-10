@@ -4,6 +4,7 @@ import 'package:code_base_assignment/features/auth/domain/usecase/login_user_use
 import 'package:code_base_assignment/features/auth/domain/usecase/register_user_usecase.dart';
 import 'package:code_base_assignment/features/auth/presentation/bloc/auth_event.dart';
 import 'package:code_base_assignment/features/auth/presentation/bloc/auth_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -71,12 +72,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
 
     if (!emailRegex.hasMatch(email)) {
-      emit(AuthFailure(AppConstants.pleaseEnterAValidEmailAddress));
+      emit(AuthFailure(AppConstants.pleaseEnterAValidEmailAddress.tr()));
       return;
     }
 
     if (password.length < 6) {
-      emit(AuthFailure(AppConstants.passwordMustBeAtLeastSixCharactersLong));
+      emit(AuthFailure(AppConstants.passwordMustBeAtLeastSixCharactersLong.tr()));
       return;
     }
 
@@ -95,14 +96,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthSuccess());
     } on FirebaseAuthException catch (e) {
       if (e.code == AppConstants.userNotFound) {
-        emit(AuthFailure(AppConstants.userNotRegistered));
+        emit(AuthFailure(AppConstants.userNotRegistered.tr()));
       } else if (e.code == AppConstants.wrongPassword) {
-        emit(AuthFailure(AppConstants.incorrectPassword));
+        emit(AuthFailure(AppConstants.incorrectPassword.tr()));
       } else {
-        emit(AuthFailure(e.message ?? AppConstants.loginFailed));
+        emit(AuthFailure(e.message ?? AppConstants.loginFailed.tr()));
       }
     } catch (e) {
-      emit(AuthFailure(AppConstants.somethingWentWrongPleaseTryAgain));
+      emit(AuthFailure(AppConstants.somethingWentWrongPleaseTryAgain.tr()));
     }
   }
 
@@ -117,23 +118,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final confirmPassword = event.confirmPassword.trim();
 
     if (name.isEmpty) {
-      emit(AuthFailure(AppConstants.nameCannotBeEmpty));
+      emit(AuthFailure(AppConstants.nameCannotBeEmpty.tr()));
       return;
     }
 
     final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
     if (!emailRegex.hasMatch(email)) {
-      emit(AuthFailure(AppConstants.pleaseEnterAValidEmailAddress));
+      emit(AuthFailure(AppConstants.pleaseEnterAValidEmailAddress.tr()));
       return;
     }
 
     if (password.length < 6) {
-      emit(AuthFailure(AppConstants.passwordMustBeAtLeastSixCharactersLong));
+      emit(AuthFailure(AppConstants.passwordMustBeAtLeastSixCharactersLong.tr()));
       return;
     }
 
     if (password != confirmPassword) {
-      emit(AuthFailure(AppConstants.passwordsDoNotMatch));
+      emit(AuthFailure(AppConstants.passwordsDoNotMatch.tr()));
       return;
     }
 
@@ -145,20 +146,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       final user = userCredential.user;
       if (user == null) {
-        emit(AuthFailure(AppConstants.userCreationFailed));
+        emit(AuthFailure(AppConstants.userCreationFailed.tr()));
         return;
       }
 
       emit(AuthSuccess());
     } on FirebaseAuthException catch (e) {
       if (e.code == AppConstants.emailAlreadyInUse) {
-        emit(AuthFailure(AppConstants.theEmailAddressIsAlreadyInUseByAnotherAccount));
+        emit(AuthFailure(AppConstants.theEmailAddressIsAlreadyInUseByAnotherAccount.tr()));
         return;
       }
-      emit(AuthFailure('${AppConstants.registrationFailed} ${e.message}'));
+      emit(AuthFailure('${AppConstants.registrationFailed.tr()} ${e.message}'));
       return;
     } catch (e) {
-      emit(AuthFailure(AppConstants.somethingWentWrongPleaseTryAgain));
+      emit(AuthFailure(AppConstants.somethingWentWrongPleaseTryAgain.tr()));
     }
   }
 }

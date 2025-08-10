@@ -1,5 +1,5 @@
 import 'package:code_base_assignment/core/utils/constants/app_constants.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -52,7 +52,7 @@ class RegisterForm extends StatelessWidget {
               child: Column(
                 children: [
                   CustomInputField(
-                    label: AppConstants.name,
+                    label: AppConstants.name.tr(),
                     icon: Icons.person,
                     controller: nameController,
                     keyboardType: TextInputType.name,
@@ -61,7 +61,7 @@ class RegisterForm extends StatelessWidget {
                   SizedBox(height: 18.h),
 
                   CustomInputField(
-                    label: AppConstants.email,
+                    label: AppConstants.email.tr(),
                     icon: Icons.email_outlined,
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -70,7 +70,7 @@ class RegisterForm extends StatelessWidget {
                   SizedBox(height: 18.h),
 
                   CustomInputField(
-                    label: AppConstants.password,
+                    label: AppConstants.password.tr(),
                     icon: Icons.lock_outline,
                     controller: passwordController,
                     isObscure: true,
@@ -79,7 +79,7 @@ class RegisterForm extends StatelessWidget {
                   SizedBox(height: 18.h),
 
                   CustomInputField(
-                    label: AppConstants.confirmPassword,
+                    label: AppConstants.confirmPassword.tr(),
                     icon: Icons.lock_outline,
                     controller: confirmPasswordController,
                     isObscure: true,
@@ -101,13 +101,13 @@ class RegisterForm extends StatelessWidget {
                         children: [
                           TextSpan(
                             text: isLogin
-                                ? AppConstants.dontHaveAnAccount
-                                : AppConstants.alreadyHaveAnAccount,
+                                ? AppConstants.dontHaveAnAccount.tr()
+                                : AppConstants.alreadyHaveAnAccount.tr(),
                           ),
                           TextSpan(
                             text: isLogin
-                                ? AppConstants.register
-                                : AppConstants.login,
+                                ? AppConstants.register.tr()
+                                : AppConstants.login.tr(),
                             style: const TextStyle(
                               decoration: TextDecoration.underline,
                               fontWeight: FontWeight.bold,
