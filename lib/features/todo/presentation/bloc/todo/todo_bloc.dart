@@ -110,7 +110,6 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       }
 
       await deleteALlTodoUseCase.call(userId); // ✅ pass both
-      // emit(TodoLoaded([]));
     } catch (e) {
       emit(TodoError("Failed to delete todo"));
     }
