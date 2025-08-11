@@ -13,6 +13,8 @@ A Flutter application demonstrating authentication, CRUD operations, and localiz
 
 ## 🛠️ Tech Stack
 - **Flutter** for UI
+- **Bloc State Management
+- **Internet Connection 
 - **Cloud Firestore** as Remote Database
 - **Hive** as Local Database
 - **Localization** for English 🇬🇧 and Arabic 🇦🇪
