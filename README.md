@@ -1,17 +1,43 @@
-# code_base_assignment
+# Code Base Assignment
 
-A new Flutter project.
+A Flutter application demonstrating authentication, CRUD operations, and localization.
 
-## Getting Started
+## ✨ Features
+- **Login**
+- **Register**
+- **Create Todo**
+- **Show Todo List**
+- **Update Todo**
+- **Delete Todo**
+- **Log out**
 
-This project is a starting point for a Flutter application.
+## 🛠️ Tech Stack
+- **Flutter** for UI
+- **Cloud Firestore** as Remote Database
+- **Hive** as Local Database
+- **Localization** for English 🇬🇧 and Arabic 🇦🇪
 
-A few resources to get you started if this is your first Flutter project:
+## 📸 Screenshots
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Login
+<img src="screen_shots/login.png" width="300" />
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# codebase_assignment
+### Register
+<img src="screen_shots/register.png" width="300" />
+
+### Create Todo
+<img src="screen_shots/create_todo.png" width="300" />
+
+### Todo List
+<img src="screen_shots/todo_list.png" width="300" />
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Flutter SDK installed
+- Firebase project configured
+
+### Setup
+1. Clone the repository
+   ```bash
+   git clone <https://github.com/aish171294/codebase_assignment.git>
